@@ -52,7 +52,7 @@ def interfaceKitInputChanged(e):
         msgState = state + " at " + getTime()
         print msgState
 #        notifo.send_notification(label="Security", title=sensor, msg=msgState)
-#        time.sleep(7)
+        time.sleep(7)
 try:
         interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
         print "Started at " + getTime()
