@@ -31,7 +31,6 @@ print ("%d attached!" % (interfaceKit.getSerialNum()))
 print ("Number of Sensor Inputs: %i" % (interfaceKit.getSensorCount()))
 
 def getSensorInfo( sensorLoc, sensorVal):
-        msgState = "0"
         if sensorVal:
                 msgState = "Closed"
         else:
