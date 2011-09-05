@@ -4,6 +4,7 @@ import sys
 import time
 import MySQLdb
 import datetime
+from threading import Thread,Timer
 
 from Phidgets.PhidgetException import *
 from Phidgets.Events.Events import *
@@ -15,20 +16,13 @@ def getTime():
         dateAndTime = now.strftime("%m-%d-%Y %H:%M:%S")
         return dateAndTime
 
-notifo = Notifo(user="pcondosta", secret="xc53e5cdc470b9adb5165adcd4aeb597549136d7c")
-db=MySQLdb.connect(host="localhost",user="pete",passwd="",db="security")
-c=db.cursor()
-
-try:
+def init():
+        notifo = Notifo(user="pcondosta", secret="xc53e5cdc470b9adb5165adcd4aeb597549136d7c")
+        db=MySQLdb.connect(host="localhost",user="pete",passwd="",db="security")
+        c=db.cursor()
         interfaceKit = InterfaceKit()
-except RuntimeError as e:
-        print ("Runtime Error: %s" % e.message)
-
-interfaceKit.openPhidget()
-interfaceKit.waitForAttach(10000)
-print ("%d attached!" % (interfaceKit.getSerialNum()))
-
-print ("Number of Sensor Inputs: %i" % (interfaceKit.getSensorCount()))
+        interfaceKit.openPhidget()
+        interfaceKit.waitForAttach(10000)
 
 def getSensorInfo( sensorLoc, sensorVal):
         if sensorVal:
@@ -52,6 +46,7 @@ def interfaceKitInputChanged(e):
         print msgState
 #        notifo.send_notification(label="Security", title=sensor, msg=msgState)
         time.sleep(7)
+
 try:
         interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
         print "Started at " + getTime()
