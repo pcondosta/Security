@@ -16,7 +16,7 @@ def getTime():
         return dateAndTime
 
 notifo = Notifo(user="pcondosta", secret="xc53e5cdc470b9adb5165adcd4aeb597549136d7c")
-db=MySQLdb.connect(host="localhost",user="pete",passwd="secnet",db="security")
+db=MySQLdb.connect(host="localhost",user="pete",passwd="",db="security")
 c=db.cursor()
 
 try:
