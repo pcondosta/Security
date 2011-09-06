@@ -24,16 +24,29 @@ def init():
         interfaceKit.openPhidget()
         interfaceKit.waitForAttach(10000)
         sec_state = interfaceKit.getInputState(0)
-        setMysql(0,0,FD)
+        FD,BSDR,BSLR = getSensor()
+        updateMysql(FD,"FD")
+        updateMysql(BSDR,"BSDR")
+        updateMysql(BSLR,"BSLR")
         
+def getSensor():
+        FD = interfaceKit.getInputState(1)
+        BSDR = interfaceKit.getInputState(2)
+        BSLR = interfaceKit.getInputState(3)
+        return FD,BSDR,BSLR
 
-def setMysql(sensor,val,name):
-        if (val)
+def getMysql():
+        c.execute("""select * from sensors""")
+        rows = c.fetchone()
+        BSDR = rows[1]
+        rows = c.fetchone()
+        BSLR = rows[1]
+        rows = c.fetchone()
+        FD = rows[1]
+        return BSDR,BSLR,FD
+        
+def updateMysql(val,name):
                 c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
-        
-        else: 
-                c.execute("""UPDATE sensors set state='0' where sensor = 'FD'""")
-        
 
 def getSensorInfo( sensorLoc, sensorVal):
         if sensorVal:
