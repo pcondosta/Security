@@ -48,6 +48,33 @@ def getMysql():
 def updateMysql(val,name):
                 c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
 
+def checkSensors():
+        FD,BSDR,BSLR = getSensor()
+        BSDRmy,BSLRmy,FDmy = getMysql()
+        if (FD):
+                if(FDmy):
+                        updateMysql(0,"FD")
+                        sendNotifo(0,"FD")
+                else:
+                        updateMysql(1,"FD")
+                        sendNotifo(1,"FD")
+        if (BSDR):
+                if (BSDRmy):
+                        updateMysql(0,"BSDR")
+                        sendNotifo(0,"BSDR")
+                else:
+                        updateMysql(1,"BSDR")
+                        sendNotifo(1,"BSDR")
+        IF (BSLR):
+                if (BSLRmy):
+                        updateMysql(0,"BSLR")
+                        sendNotifo(0,"BSLR")
+                else:
+                        updateMysql(1,"BSLR")
+                        sendNotifo(1,"BSLR")
+        
+def sendNotifo(state, location):
+        
 def getSensorInfo( sensorLoc, sensorVal):
         if sensorVal:
                 msgState = "Closed"
@@ -73,7 +100,9 @@ def interfaceKitInputChanged(e):
 
 init()
 while True:
-        
+        if (sec_state):
+                c.execute("""INSERT INTO sensors_audit (sensor, state, time) VALUES ('Security System', 'ON', %s)""", (getTime()))
+                checkSensors()
 #        interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
 #        print "Started at " + getTime()
 #        c.execute("""INSERT INTO sensors_audit (sensor, state, time) VALUES ('Security System', 'ON', %s)""", (getTime()))
