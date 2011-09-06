@@ -30,22 +30,20 @@ def init():
         updateMysql(BSLR,"BSLR")
 
 def sec_state(value):
-        
+        if (value):
+                curState = getMysql("SYSTEM")
+                
 def getSensor():
         FD = interfaceKit.getInputState(1)
         BSDR = interfaceKit.getInputState(2)
         BSLR = interfaceKit.getInputState(3)
         return FD,BSDR,BSLR
 
-def getMysql():
-        c.execute("""select * from sensors""")
+def getMysql(value):
+        c.execute("""select * from sensors where sensor = %s""", (value))
         rows = c.fetchone()
-        BSDR = rows[1]
-        rows = c.fetchone()
-        BSLR = rows[1]
-        rows = c.fetchone()
-        FD = rows[1]
-        return BSDR,BSLR,FD
+        val = rows[1]
+        return val
         
 def updateMysql(val,name):
                 c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
