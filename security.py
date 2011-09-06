@@ -56,32 +56,43 @@ def getMysql(value):
         return val
         
 def updateMysql(val,name):
-                c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
+        c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
+                
+def setOutput(channel,value):
+        interfaceKit.setOutputState(channel,value)
 
 def checkSensors():
         FD,BSDR,BSLR = getSensor()
-        BSDRmy,BSLRmy,FDmy = getMysql()
+        FDmy = getMysql("FD")
+        BSDRmy = getMysql("BSDR")
+        BSLRmy = getMysql("BSLR")
         if (FD):
                 if(FDmy):
                         updateMysql(0,"FD")
                         sendNotifo(0,"FD")
+                        setOutput("0",0)
                 else:
                         updateMysql(1,"FD")
                         sendNotifo(1,"FD")
+                        setOutput("0",1)
         if (BSDR):
                 if (BSDRmy):
                         updateMysql(0,"BSDR")
                         sendNotifo(0,"BSDR")
+                        setOutput("1",0)
                 else:
                         updateMysql(1,"BSDR")
                         sendNotifo(1,"BSDR")
+                        setOutput("1",1)
         IF (BSLR):
                 if (BSLRmy):
                         updateMysql(0,"BSLR")
                         sendNotifo(0,"BSLR")
+                        setOutput("2",0)
                 else:
                         updateMysql(1,"BSLR")
                         sendNotifo(1,"BSLR")
+                        setOutput("2",1)
         
 def sendNotifo(state, location):
         if (state):
