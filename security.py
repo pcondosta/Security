@@ -35,11 +35,11 @@ def sec_state(value):
         if value is None:
                 return getMysql("SYSTEM")
         if (value):
-                if (curState eq "0"):
+                if (curState == "0"):
                         updateMysql(1,"SYSTEM")
                         sendNotifo(1,"SYSTEM")
         else:
-                if (curState eq "1"):
+                if (curState == "1"):
                         updateMysql(0,"SYSTEM")
                         sendNotifo(0,"SYSTEM")
                 
@@ -84,7 +84,7 @@ def checkSensors():
                         updateMysql(1,"BSDR")
                         sendNotifo(1,"BSDR")
                         setOutput("1",1)
-        IF (BSLR):
+        if (BSLR):
                 if (BSLRmy):
                         updateMysql(0,"BSLR")
                         sendNotifo(0,"BSLR")
