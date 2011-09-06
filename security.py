@@ -23,6 +23,17 @@ def init():
         interfaceKit = InterfaceKit()
         interfaceKit.openPhidget()
         interfaceKit.waitForAttach(10000)
+        sec_state = interfaceKit.getInputState(0)
+        setMysql(0,0,FD)
+        
+
+def setMysql(sensor,val,name):
+        if (val)
+                c.execute("""UPDATE sensors set state = %s where sensor = %s""",(val,name))
+        
+        else: 
+                c.execute("""UPDATE sensors set state='0' where sensor = 'FD'""")
+        
 
 def getSensorInfo( sensorLoc, sensorVal):
         if sensorVal:
@@ -47,15 +58,14 @@ def interfaceKitInputChanged(e):
 #        notifo.send_notification(label="Security", title=sensor, msg=msgState)
         time.sleep(7)
 
-try:
-        interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
-        print "Started at " + getTime()
+init()
+while True:
+        
+#        interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
+#        print "Started at " + getTime()
 #        c.execute("""INSERT INTO sensors_audit (sensor, state, time) VALUES ('Security System', 'ON', %s)""", (getTime()))
 #        notifo.send_notification(label="Security", title="Started", msg="Security is on")
-except PhidgetException as e:
-        print ("Phidget Exception %i: %s" % (e.code, e.details))
 
-chr = sys.stdin.read(1)
 
 #c.execute("""INSERT INTO sensors_audit (sensor, state, time) VALUES ('Security System', 'OFF', %s)""", (getTime()))
 
