@@ -28,6 +28,8 @@ def init():
         updateMysql(FD,"FD")
         updateMysql(BSDR,"BSDR")
         updateMysql(BSLR,"BSLR")
+
+def sec_state(value):
         
 def getSensor():
         FD = interfaceKit.getInputState(1)
@@ -100,8 +102,8 @@ def interfaceKitInputChanged(e):
 
 init()
 while True:
+        sec_state = interfaceKit
         if (sec_state):
-                c.execute("""INSERT INTO sensors_audit (sensor, state, time) VALUES ('Security System', 'ON', %s)""", (getTime()))
                 checkSensors()
 #        interfaceKit.setOnInputChangeHandler(interfaceKitInputChanged)
 #        print "Started at " + getTime()
