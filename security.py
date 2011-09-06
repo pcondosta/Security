@@ -23,7 +23,8 @@ def init():
         interfaceKit = InterfaceKit()
         interfaceKit.openPhidget()
         interfaceKit.waitForAttach(10000)
-        sec_state = interfaceKit.getInputState(0)
+        security_state = interfaceKit.getInputState(0)
+        sec_state(security_state)
         FD,BSDR,BSLR = getSensor()
         updateMysql(FD,"FD")
         updateMysql(BSDR,"BSDR")
@@ -36,9 +37,11 @@ def sec_state(value):
         if (value):
                 if (curState eq "0"):
                         updateMysql(1,"SYSTEM")
+                        sendNotifo(1,"SYSTEM")
         else:
                 if (curState eq "1"):
                         updateMysql(0,"SYSTEM")
+                        sendNotifo(0,"SYSTEM")
                 
 def getSensor():
         FD = interfaceKit.getInputState(1)
@@ -81,7 +84,14 @@ def checkSensors():
                         sendNotifo(1,"BSLR")
         
 def sendNotifo(state, location):
-        
+        if (state):
+                msgState = "Opened at " + getTime()
+                notifo.send_notification(label="Security", title=location, msg=msgState)
+        else:
+                msgState = "Closed At " + getTime()
+                notifo.send_notification(label="Security", title=location, msg=msgState)
+
+# TODO: Delete function below
 def getSensorInfo( sensorLoc, sensorVal):
         if sensorVal:
                 msgState = "Closed"
@@ -96,6 +106,7 @@ def getSensorInfo( sensorLoc, sensorVal):
                 sensor = "FD"
         return sensor,msgState
 
+# TODO: Delete function below
 def interfaceKitInputChanged(e):
         sensor,state = getSensorInfo(e.index, e.value)
         print ("%s: %s, %i, %s" % (sensor, state, e.value, getTime()))
@@ -106,6 +117,7 @@ def interfaceKitInputChanged(e):
         time.sleep(7)
 
 init()
+
 while True:
         security_state = sec_state()
         if (security_state):
